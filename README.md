@@ -1,9 +1,9 @@
 # Epochs-elixir
-Convert various epoch times to NaiveDateTime times in Elixir.
+Convert various epoch times to [NaiveDateTime](http://elixir-lang.org/docs/stable/elixir/NaiveDateTime.html) times in [Elixir](http://elixir-lang.org/).
 
 ## Example
 
-```bash
+```
 $ iex -S mix
 Erlang/OTP 19 [erts-8.1] [source-77fb4f8] [64-bit] [smp:2:2] [async-threads:10] [hipe] [kernel-poll:false]
 
