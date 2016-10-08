@@ -24,13 +24,11 @@ defmodule Epochs do
   before the Unix epoch. @noppers worked out how to do this.
   """
   def google_calendar(n) do
-  	seconds_per_day = 24 * 60 * 60
-  	total_days = div(n, seconds_per_day)
-  	seconds = rem(n, seconds_per_day)
+
+  	{total_days, seconds} = div_rem(n, 24 * 60 * 60)
 
   	# A "Google month" has 32 days!
-  	months = div(total_days, 32)
-  	days = rem(total_days, 32)
+  	{months, days} = div_rem(total_days, 32)
 
   	# NaiveDateTime.new(1969,12,31,0,0,0,0)
   	# |> plus_days(days)
@@ -55,6 +53,13 @@ defmodule Epochs do
 	Calendar.NaiveDateTime.from_date_and_time!(date, time)
 	|> Calendar.NaiveDateTime.add!(seconds)
 	
+  end
+
+  @doc """
+  Return both the div and the rem of the given division.
+  """
+  def div_rem(n, d) do
+  	{div(n, d), rem(n, d)}
   end
 
   @doc """
