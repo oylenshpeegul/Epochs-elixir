@@ -22,6 +22,15 @@ defmodule Epochs do
   @doc """
   Google Calendar time seems to count 32-day months from the day
   before the Unix epoch. @noppers worked out how to do this.
+
+  We really want to write something like
+
+  	NaiveDateTime.new(1969,12,31,0,0,0,0)
+  	|> plus_days(days)
+  	|> plus_months(months)
+  	|> plus_seconds(seconds)
+
+  but the functions we need are scattered about the :calendar module.
   """
   def google_calendar(n) do
 
@@ -29,19 +38,6 @@ defmodule Epochs do
 
   	# A "Google month" has 32 days!
   	{months, days} = div_rem(total_days, 32)
-
-  	# NaiveDateTime.new(1969,12,31,0,0,0,0)
-  	# |> plus_days(days)
-  	# |> plus_months(months)
-  	# |> plus_seconds(seconds)
-	#
-  	# I guess we need https://github.com/lau/calendar for something
-  	# like this? But we'll need to handle days and months with Date
-  	# and seconds with Time. Then we'll have to paste together a
-  	# NaiveDateTime from the new Date and Time...?
-	#
-	# No, there is no Calendar.Time.add! We must use
-	# Calendar.NaiveDateTime.add! This is maddening!
 
 	{:ok, date} = Date.new(1969,12,31)
 	{:ok, time} = Time.new(0,0,0, {0,6})
