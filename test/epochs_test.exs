@@ -12,10 +12,10 @@ defmodule EpochsTest do
 	  ~N[2009-02-13 23:31:30.000000]
   end
 
-  # test "google_calendar 1_297_899_090" do
-  # 	assert Epochs.google_calendar(1_297_899_090) ==
-  # 	  ~N[2009-02-13 23:31:30.000000]
-  # end
+  test "google_calendar 1_297_899_090" do
+  	assert Epochs.google_calendar(1_297_899_090) ==
+  	  ~N[2009-02-13 23:31:30.000000]
+  end
 
   test "java 1_234_567_890_000" do
 	assert Epochs.java(1_234_567_890_000) ==
