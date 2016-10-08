@@ -22,33 +22,22 @@ defmodule Epochs do
   @doc """
   Google Calendar time seems to count 32-day months from the day
   before the Unix epoch. @noppers worked out how to do this.
-
-  We really want to write something like
-
-  	NaiveDateTime.new(1969,12,31,0,0,0,0)
-  	|> plus_days(days)
-  	|> plus_months(months)
-  	|> plus_seconds(seconds)
-
-  but the functions we need are scattered about the :calendar module.
   """
   def google_calendar(n) do
 
-  	{total_days, seconds} = div_rem(n, 24 * 60 * 60)
+  	{whole_days, seconds} = div_rem(n, 24 * 60 * 60)
 
   	# A "Google month" has 32 days!
-  	{months, days} = div_rem(total_days, 32)
+  	{months, days} = div_rem(whole_days, 32)
 
-	{:ok, date} = Date.new(1969,12,31)
-	{:ok, time} = Time.new(0,0,0, {0,6})
+  	# A "Google epoch" is one day early.
+  	{:ok, datetime} = NaiveDateTime.new(1969,12,31,0,0,0,0)
+	
+	datetime
+  	|> plus_days(days)
+  	|> plus_months(months)
+	|> plus_seconds(seconds)
 
-	date = date
-	|> Calendar.Date.add!(days)
-	|> plus_months(months)
-	
-	Calendar.NaiveDateTime.from_date_and_time!(date, time)
-	|> Calendar.NaiveDateTime.add!(seconds)
-	
   end
 
   @doc """
@@ -59,16 +48,34 @@ defmodule Epochs do
   end
 
   @doc """
-  Return the date n months from the given date.
+  Return the NaiveDateTime n days from the given NaiveDateTime.
   """
-  def plus_months(date, 0) do
-  	date
+  def plus_days(ndt, n) do
+  	d = NaiveDateTime.to_date(ndt) 
+  	t = NaiveDateTime.to_time(ndt) 
+	{:ok, ndt} = NaiveDateTime.new(Calendar.Date.add!(d, n), t)
+	ndt
   end
-  def plus_months(date, n) do
-  	dim = Calendar.Date.number_of_days_in_month(date)
-  	plus_months(Calendar.Date.add!(date, dim), n-1)
+
+  @doc """
+  Return the NaiveDateTime n months from the given NaiveDateTime.
+  """
+  def plus_months(ndt, 0) do
+  	ndt
   end
-  
+  def plus_months(ndt, n) do
+  	d = NaiveDateTime.to_date(ndt)
+  	dim = Calendar.Date.number_of_days_in_month(d)
+  	plus_months(plus_days(ndt, dim), n-1)
+  end
+
+  @doc """
+  Return the NaiveDateTime n seconds from the given NaiveDateTime.
+  """
+  def plus_seconds(ndt, n) do
+  	Calendar.NaiveDateTime.add!(ndt, n)
+  end
+
   @doc """
   Java time is the number of milliseconds since 1970-01-01.
   """
