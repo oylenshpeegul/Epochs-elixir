@@ -19,32 +19,54 @@ defmodule Epochs do
 	_epoch2time(n, 1, 978_307_200)
   end
 
-  # Rats, we're going to have to wait until at least Elixir 1.4 for this!
-  #
-  # @doc """
-  # Google Calendar time seems to count 32-day months from the day
-  # before the Unix epoch. @noppers worked out how to do this.
-  # """
-  # def google_calendar(n) do
-  # 	seconds_per_day = 24 * 60 * 60
-  # 	total_days = div(n, seconds_per_day)
-  # 	seconds = rem(n, seconds_per_day)
+  @doc """
+  Google Calendar time seems to count 32-day months from the day
+  before the Unix epoch. @noppers worked out how to do this.
+  """
+  def google_calendar(n) do
+  	seconds_per_day = 24 * 60 * 60
+  	total_days = div(n, seconds_per_day)
+  	seconds = rem(n, seconds_per_day)
 
-  # 	# A "Google month" has 32 days!
-  # 	months = div(total_days, 32)
-  # 	days = rem(total_days, 32)
+  	# A "Google month" has 32 days!
+  	months = div(total_days, 32)
+  	days = rem(total_days, 32)
 
-  # 	# I guess we need https://github.com/lau/calendar for something
-  # 	# like this? But we'll need to handle days and months with Date
-  # 	# and seconds with Time. Then we'll have to paste together a
-  # 	# NaiveDateTime from the new Date and Time...?
-  # 	#
-  # 	# NaiveDateTime.new(1969,12,31,0,0,0,0)
-  # 	# |> plus_days(days)
-  # 	# |> plus_months(months)
-  # 	# |> plus_seconds(seconds)
+  	# NaiveDateTime.new(1969,12,31,0,0,0,0)
+  	# |> plus_days(days)
+  	# |> plus_months(months)
+  	# |> plus_seconds(seconds)
+	#
+  	# I guess we need https://github.com/lau/calendar for something
+  	# like this? But we'll need to handle days and months with Date
+  	# and seconds with Time. Then we'll have to paste together a
+  	# NaiveDateTime from the new Date and Time...?
+	#
+	# No, there is no Calendar.Time.add! We must use
+	# Calendar.NaiveDateTime.add! This is maddening!
+
+	{:ok, date} = Date.new(1969,12,31)
+	{:ok, time} = Time.new(0,0,0, {0,6})
+
+	date = date
+	|> Calendar.Date.add!(days)
+	|> plus_months(months)
 	
-  # end
+	Calendar.NaiveDateTime.from_date_and_time!(date, time)
+	|> Calendar.NaiveDateTime.add!(seconds)
+	
+  end
+
+  @doc """
+  Return the date n months from the given date.
+  """
+  def plus_months(date, 0) do
+	date
+  end
+  def plus_months(date, n) do
+	dim = Calendar.Date.number_of_days_in_month(date)
+	plus_months(Calendar.Date.add!(date, dim), n-1)
+  end
   
   @doc """
   Java time is the number of milliseconds since 1970-01-01.
