@@ -62,11 +62,11 @@ defmodule Epochs do
   Return the date n months from the given date.
   """
   def plus_months(date, 0) do
-	date
+  	date
   end
   def plus_months(date, n) do
-	dim = Calendar.Date.number_of_days_in_month(date)
-	plus_months(Calendar.Date.add!(date, dim), n-1)
+  	dim = Calendar.Date.number_of_days_in_month(date)
+  	plus_months(Calendar.Date.add!(date, dim), n-1)
   end
   
   @doc """
