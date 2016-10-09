@@ -22,23 +22,11 @@ defmodule Epochs do
   @doc """
   Google Calendar time seems to count 32-day months from the day
   before the Unix epoch. @noppers worked out how to do this.
-
-  We really want to write something like
-
-  	NaiveDateTime.new(1969,12,31,0,0,0,0)
-  	|> plus_days(days)
-  	|> plus_months(months)
-  	|> plus_seconds(seconds)
-
-  but the functions we need are scattered about the :calendar module.
   """
   def google_calendar(n) do
 
-  	{total_days, seconds} = div_rem(n, 24 * 60 * 60)
-
-  	# A "Google month" has 32 days!
-  	{months, days} = div_rem(total_days, 32)
-
+  	{whole_days, seconds} = div_rem(n, 24 * 60 * 60)
+  	{months, days} = div_rem(whole_days, 32)
 	{:ok, date} = Date.new(1969,12,31)
 	{:ok, time} = Time.new(0,0,0, {0,6})
 
@@ -67,6 +55,25 @@ defmodule Epochs do
   def plus_months(date, n) do
   	dim = Calendar.Date.number_of_days_in_month(date)
   	plus_months(Calendar.Date.add!(date, dim), n-1)
+  end
+
+  @doc """
+  ICQ time is the number of days since 1899-12-30. Days can have
+  a fractional part.
+  """
+  def icq(days) do
+	{:ok, date} = Date.new(1899,12,30)
+	{:ok, time} = Time.new(0,0,0, {0,6})
+
+	# Separate the integer part of the day and the fractional part of
+	# the day. Want the fractional part of the day in seconds.
+	intdays = trunc(days)
+	seconds = trunc((days - intdays) * 24 * 60 * 60)
+
+	{:ok, date} = Calendar.Date.add(date, intdays)
+	
+	Calendar.NaiveDateTime.from_date_and_time!(date, time)
+	|> Calendar.NaiveDateTime.add!(seconds)
   end
   
   @doc """
