@@ -3,6 +3,8 @@ defmodule Epochs do
   The Epochs module converts various times to Unix time.
   """
 
+  @seconds_per_day 24 * 60 * 60
+  
   @doc """
   Chrome time is the number of microseconds since 1601-01-01, which is
   11,644,473,600 seconds before 1970-01-01.
@@ -25,7 +27,7 @@ defmodule Epochs do
   """
   def google_calendar(n) do
 
-  	{whole_days, seconds} = div_rem(n, 24 * 60 * 60)
+  	{whole_days, seconds} = div_rem(n, @seconds_per_day)
   	{months, days} = div_rem(whole_days, 32)
 	{:ok, date} = Date.new(1969,12,31)
 	{:ok, time} = Time.new(0,0,0, {0,6})
@@ -68,7 +70,7 @@ defmodule Epochs do
 	# Separate the integer part of the day and the fractional part of
 	# the day. Want the fractional part of the day in seconds.
 	intdays = trunc(days)
-	seconds = trunc((days - intdays) * 24 * 60 * 60)
+	seconds = trunc((days - intdays) * @seconds_per_day)
 
 	{:ok, date} = Calendar.Date.add(date, intdays)
 	
