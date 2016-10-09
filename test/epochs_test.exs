@@ -17,6 +17,16 @@ defmodule EpochsTest do
   	  ~N[2009-02-13 23:31:30.000000]
   end
 
+  test "icq 0" do
+  	assert Epochs.icq(0) ==
+  	  ~N[1899-12-30 00:00:00.000000]
+  end
+
+  test "icq 39857.980209" do
+  	assert Epochs.icq(39857.980209) ==
+  	  ~N[2009-02-13 23:31:30.000000]
+  end
+
   test "java 1_234_567_890_000" do
 	assert Epochs.java(1_234_567_890_000) ==
 	  ~N[2009-02-13 23:31:30.000000]
