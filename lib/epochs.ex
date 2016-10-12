@@ -145,7 +145,7 @@ defmodule Epochs do
   defp plus_months(date, 0) do
   	date
   end
-  defp plus_months(date, n) do
+  defp plus_months(date, n) when n > 0 do
   	dim = Calendar.Date.number_of_days_in_month(date)
   	plus_months(Calendar.Date.add!(date, dim), n-1)
   end
