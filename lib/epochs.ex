@@ -93,6 +93,16 @@ defmodule Epochs do
   end
 
   @doc """
+  OLE time is the number of days since 1899-12-30. Days can have a
+  fractional part and is given as a binary representing an IEEE 8-byte
+  floating-point number.
+  """
+  def ole(days) do
+	<<d_days::float-native>> = days
+	icq d_days
+  end
+  
+  @doc """
   Symbian time is the number of microseconds since the year 0, which
   is 62,167,219,200 seconds before 1970-01-01.
   """
