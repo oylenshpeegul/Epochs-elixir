@@ -27,36 +27,18 @@ defmodule Epochs do
   """
   def google_calendar(n) do
 
-  	{whole_days, seconds} = div_rem(n, @seconds_per_day)
-  	{months, days} = div_rem(whole_days, 32)
+  	{whole_days, seconds} = _div_rem(n, @seconds_per_day)
+  	{months, days} = _div_rem(whole_days, 32)
 	{:ok, date} = Date.new(1969,12,31)
 	{:ok, time} = Time.new(0,0,0, {0,6})
 
 	date = date
 	|> Calendar.Date.add!(days)
-	|> plus_months(months)
+	|> _plus_months(months)
 	
 	Calendar.NaiveDateTime.from_date_and_time!(date, time)
 	|> Calendar.NaiveDateTime.add!(seconds)
 	
-  end
-
-  @doc """
-  Return both the div and the rem of the given division.
-  """
-  def div_rem(n, d) do
-  	{div(n, d), rem(n, d)}
-  end
-
-  @doc """
-  Return the date n months from the given date.
-  """
-  def plus_months(date, 0) do
-  	date
-  end
-  def plus_months(date, n) do
-  	dim = Calendar.Date.number_of_days_in_month(date)
-  	plus_months(Calendar.Date.add!(date, dim), n-1)
   end
 
   @doc """
@@ -144,10 +126,34 @@ defmodule Epochs do
 	_epoch2time(n, 10_000_000, -11_644_473_600)
   end
 
-  def _epoch2time(n, q, s) do
-	(div(n, q) + s) * 1_000_000
+  @doc """
+  Return both the div and the rem of the given division.
+  """
+  def _div_rem(n, d) do
+  	{div(n, d), rem(n, d)}
+  end
+
+  @doc """
+  Given a number n, a dividend d, and a shift s
+    - do the divide and shift
+    - interpret the result as a Unix time
+    - return that time as a NaiveDateTime
+  """
+  def _epoch2time(n, d, s) do
+	(div(n, d) + s) * 1_000_000
 	|> DateTime.from_unix!(:microseconds)
 	|> DateTime.to_naive
+  end
+
+  @doc """
+  Return the date n months from the given date.
+  """
+  def _plus_months(date, 0) do
+  	date
+  end
+  def _plus_months(date, n) do
+  	dim = Calendar.Date.number_of_days_in_month(date)
+  	_plus_months(Calendar.Date.add!(date, dim), n-1)
   end
 
 end
