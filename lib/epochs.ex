@@ -12,6 +12,9 @@ defmodule Epochs do
   def chrome(n) do
 	epoch2time(n, 1_000_000, -11_644_473_600)
   end
+  def to_chrome(ndt) do
+	time2epoch(ndt, 1_000_000, -11_644_473_600)
+  end
 
   @doc """
   Cocoa time is the number of seconds since 2001-01-01, which is
@@ -19,6 +22,9 @@ defmodule Epochs do
   """
   def cocoa(n) do
 	epoch2time(n, 1, 978_307_200)
+  end
+  def to_cocoa(ndt) do
+	time2epoch(ndt, 1, 978_307_200)
   end
 
   @doc """
@@ -66,12 +72,18 @@ defmodule Epochs do
   def java(n) do
 	epoch2time(n, 1_000, 0)
   end
+  def to_java(ndt) do
+	time2epoch(ndt, 1_000, 0)
+  end
 
   @doc """
   Mozilla time is the number of microseconds since 1970-01-01.
   """
   def mozilla(n) do
 	epoch2time(n, 1_000_000, 0)
+  end
+  def to_mozilla(ndt) do
+	time2epoch(ndt, 1_000_000, 0)
   end
 
   @doc """
@@ -91,12 +103,18 @@ defmodule Epochs do
   def symbian(n) do
 	epoch2time(n, 1_000_000, -62_167_219_200)
   end
+  def to_symbian(ndt) do
+	time2epoch(ndt, 1_000_000, -62_167_219_200)
+  end
 
   @doc """
   Unix time is the number of seconds since 1970-01-01.
   """
   def unix(n) do
 	epoch2time(n, 1, 0)
+  end
+  def to_unix(ndt) do
+	time2epoch(ndt, 1, 0)
   end
 
   @doc """
@@ -107,6 +125,9 @@ defmodule Epochs do
   def uuid_v1(n) do
 	epoch2time(n, 10_000_000, -12_219_292_800)
   end
+  def to_uuid_v1(ndt) do
+	time2epoch(ndt, 10_000_000, -12_219_292_800)
+  end
 
   @doc """
   Windows date time (e.g., .NET) is the number of hectonanoseconds
@@ -116,6 +137,9 @@ defmodule Epochs do
   def windows_date(n) do
 	epoch2time(n, 10_000_000, -62_135_596_800)
   end
+  def to_windows_date(ndt) do
+	time2epoch(ndt, 10_000_000, -62_135_596_800)
+  end
 
   @doc """
   Windows file time (e.g., NTFS) is the number of hectonanoseconds
@@ -124,6 +148,9 @@ defmodule Epochs do
   """
   def windows_file(n) do
 	epoch2time(n, 10_000_000, -11_644_473_600)
+  end
+  def to_windows_file(ndt) do
+	time2epoch(ndt, 10_000_000, -11_644_473_600)
   end
 
   # Return both the div and the rem of the given division.
@@ -141,6 +168,18 @@ defmodule Epochs do
 	|> DateTime.to_naive
   end
 
+  # Given a NaiveDateTime ndt, a multiplier m, and a shift s
+  #   - interpret the result as a Unix time
+  #   - return that time as a NaiveDateTime
+  #   - do the multiply and shift
+  defp time2epoch(ndt, m, s) do
+	micros = ndt
+	|> Calendar.NaiveDateTime.to_date_time_utc()
+	|> DateTime.to_unix(:microseconds)
+	
+	m*((micros / 1_000_000) - s)
+  end
+  
   # Return the date n months from the given date.
   defp plus_months(date, 0) do
   	date
