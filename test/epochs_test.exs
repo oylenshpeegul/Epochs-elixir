@@ -11,6 +11,17 @@ defmodule EpochsTest do
 	  12_879_041_490_000_000
   end
 
+  # Without big floats, we only get enough accuracy to test three
+  # digits after the decimal place.
+  test "chrome 12912187816559000" do
+	assert Epochs.chrome(12912187816559000) ==
+	  ~N[2010-03-04 14:50:16.559000]
+  end
+  test "to_chrome ~N[2010-03-04 14:50:16.559000]" do
+	assert Epochs.to_chrome(~N[2010-03-04 14:50:16.559000]) ==
+	  12912187816559000
+  end
+
   test "cocoa 256_260_690" do
 	assert Epochs.cocoa(256_260_690) ==
 	  ~N[2009-02-13 23:31:30.000000]
