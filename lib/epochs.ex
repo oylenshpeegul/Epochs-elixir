@@ -163,14 +163,14 @@ defmodule Epochs do
   #   - interpret the result as a Unix time
   #   - return that time as a NaiveDateTime
   defp epoch2time(n, d, s) do
-	(div(n, d) + s) * 1_000_000
+	trunc(((n / d) + s) * 1_000_000)
 	|> DateTime.from_unix!(:microseconds)
 	|> DateTime.to_naive
   end
 
   # Given a NaiveDateTime ndt, a multiplier m, and a shift s
+  #   - convert that time to a NaiveDateTime
   #   - interpret the result as a Unix time
-  #   - return that time as a NaiveDateTime
   #   - do the multiply and shift
   defp time2epoch(ndt, m, s) do
 	micros = ndt
