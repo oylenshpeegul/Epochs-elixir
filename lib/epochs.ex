@@ -174,7 +174,7 @@ defmodule Epochs do
   #   - do the multiply and shift
   defp time2epoch(ndt, m, s) do
 	micros = ndt
-	|> Calendar.NaiveDateTime.to_date_time_utc()
+	|> Calendar.NaiveDateTime.to_date_time_utc
 	|> DateTime.to_unix(:microseconds)
 	
 	m*((micros / 1_000_000) - s)
