@@ -14,7 +14,6 @@ iex(1)> Epochs.unix(1234567890)
 ~N[2009-02-13 23:31:30.000000]
 iex(2)> Epochs.chrome(12879041490654321)
 ~N[2009-02-13 23:31:30.654319]
-iex(3)> 
 ```
 
 Now there are functions in the other direction!
