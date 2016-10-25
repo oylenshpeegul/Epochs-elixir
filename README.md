@@ -13,17 +13,17 @@ Interactive Elixir (1.3.2) - press Ctrl+C to exit (type h() ENTER for help)
 iex(1)> Epochs.unix(1234567890)
 ~N[2009-02-13 23:31:30.000000]
 iex(2)> Epochs.chrome(12879041490654321)
-~N[2009-02-13 23:31:30.000000]
+~N[2009-02-13 23:31:30.654319]
 iex(3)> 
 ```
 
-Update: Now there are functions in the other direction!
+Now there are functions in the other direction!
 
 ```
 iex(4)> Epochs.to_unix(~N[2009-02-13 23:31:30.000000])
-1234567890.0
-iex(5)> Epochs.to_chrome(~N[2009-02-13 23:31:30.000000])
-1.287904149e16
+1234567890
+iex(5)> Epochs.to_chrome(~N[2009-02-13 23:31:30.654319])
+12879041490654320
 ```
 
 ## Contributors
