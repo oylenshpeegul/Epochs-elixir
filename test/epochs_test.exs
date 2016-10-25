@@ -36,6 +36,11 @@ defmodule EpochsTest do
   	  ~N[2009-02-13 23:31:30.000000]
   end
 
+  test "to_google_calendar ~N[2009-02-13 23:31:30.000000]" do
+  	assert Epochs.to_google_calendar(~N[2009-02-13 23:31:30.000000]) ==
+  	  1_297_899_090
+  end
+
   test "icq 0" do
   	assert Epochs.icq(0) ==
   	  ~N[1899-12-30 00:00:00.000000]
