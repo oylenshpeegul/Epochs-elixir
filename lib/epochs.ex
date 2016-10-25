@@ -46,6 +46,16 @@ defmodule Epochs do
 	|> Calendar.NaiveDateTime.add!(seconds)
 	
   end
+  def to_google_calendar(ndt) do
+	date = NaiveDateTime.to_date(ndt)
+	time = NaiveDateTime.to_time(ndt)
+	(((((date.year - 1970)*12 +
+	    (date.month -  1))*32 +
+	     date.day        )*24 +
+	     time.hour       )*60 +
+	     time.minute     )*60 +
+	     time.second
+  end
 
   @doc """
   ICQ time is the number of days since 1899-12-30. Days can have
