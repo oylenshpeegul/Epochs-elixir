@@ -17,6 +17,15 @@ iex(2)> Epochs.chrome(12879041490654321)
 iex(3)> 
 ```
 
+Update: Now there are functions in the other direction!
+
+```
+iex(4)> Epochs.to_unix(~N[2009-02-13 23:31:30.000000])
+1234567890.0
+iex(5)> Epochs.to_chrome(~N[2009-02-13 23:31:30.000000])
+1.287904149e16
+```
+
 ## Contributors
 
 [@noppers](https://github.com/noppers) originally worked out how to do the Google Calendar calculation.
