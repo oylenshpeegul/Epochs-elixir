@@ -65,6 +65,18 @@ defmodule Epochs do
 	Calendar.NaiveDateTime.from_date_and_time!(date, time)
 	|> Calendar.NaiveDateTime.add!(seconds)
   end
+  def to_icq(ndt) do
+	dt1 = Calendar.NaiveDateTime.to_date_time_utc(ndt)
+
+	{:ok, date} = Date.new(1899,12,30)
+	{:ok, time} = Time.new(0,0,0, {0,6})
+	{:ok, ndt2} = Calendar.NaiveDateTime.from_date_and_time(date, time)
+	dt2 = Calendar.NaiveDateTime.to_date_time_utc(ndt2)
+
+	{:ok, s, micros, ba} = Calendar.DateTime.diff(dt1, dt2)
+	
+	(s + micros / 1_000_000) / @seconds_per_day
+  end
   
   @doc """
   Java time is the number of milliseconds since 1970-01-01.
@@ -94,6 +106,10 @@ defmodule Epochs do
   def ole(days) do
 	<<d_days::float-native>> = days
 	icq d_days
+  end
+  def to_ole(binary) do
+	icq = to_icq(binary)
+	<<icq::float-native>>
   end
   
   @doc """
