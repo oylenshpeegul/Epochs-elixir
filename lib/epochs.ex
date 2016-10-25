@@ -83,7 +83,7 @@ defmodule Epochs do
 	{:ok, ndt2} = Calendar.NaiveDateTime.from_date_and_time(date, time)
 	dt2 = Calendar.NaiveDateTime.to_date_time_utc(ndt2)
 
-	{:ok, s, micros, ba} = Calendar.DateTime.diff(dt1, dt2)
+	{:ok, s, micros, :after} = Calendar.DateTime.diff(dt1, dt2)
 	
 	(s + micros / 1_000_000) / @seconds_per_day
   end
@@ -118,8 +118,8 @@ defmodule Epochs do
 	icq d_days
   end
   def to_ole(binary) do
-	icq = to_icq(binary)
-	<<icq::float-native>>
+	d_days = to_icq(binary)
+	<<d_days::float-native>>
   end
   
   @doc """
