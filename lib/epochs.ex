@@ -203,7 +203,7 @@ defmodule Epochs do
 	|> Calendar.NaiveDateTime.to_date_time_utc
 	|> DateTime.to_unix(:microseconds)
 	
-	m*((micros / 1_000_000) - s)
+	trunc(m*((micros / 1_000_000) - s))
   end
   
   # Return the date n months from the given date.
