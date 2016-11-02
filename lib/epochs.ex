@@ -3,8 +3,6 @@ defmodule Epochs do
   The Epochs module converts various times to Unix time.
   """
 
-  @seconds_per_day 24 * 60 * 60
-  
   @doc """
   Chrome time is the number of microseconds since 1601-01-01, which is
   11,644,473,600 seconds before 1970-01-01.
