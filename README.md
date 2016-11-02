@@ -31,8 +31,10 @@ iex(5)> Epochs.to_chrome(~N[2009-02-13 23:31:30.654319])
 
 ## See Also
 
-This project was originally done in [Perl](https://github.com/oylenshpeegul/Epochs-perl).
+This project was originally done in [Perl](https://github.com/oylenshpeegul/Epochs-perl). See [the Epochs web page](http://oylenshpeegul.github.io/Epochs-perl/) for motivation.
 
-There is also a version in [Go](https://github.com/oylenshpeegul/epochs).
+There are also versions in:
+- [Go](https://github.com/oylenshpeegul/epochs)
+- [PowerShell](https://github.com/oylenshpeegul/Epochs-powershell)
 
-See [the Epochs gh-page](http://oylenshpeegul.github.io/Epochs-perl/) for motivation.
+
