@@ -2,6 +2,15 @@ defmodule EpochsTest do
   use ExUnit.Case, async: true
   doctest Epochs
 
+  test "apfs 1_234_567_890_000_000_000" do
+	assert Epochs.apfs(1_234_567_890_000_000_000) ==
+	  ~N[2009-02-13 23:31:30.000000]
+  end
+  test "to_apfs ~N[2009-02-13 23:31:30.000000]" do
+	assert Epochs.to_apfs(~N[2009-02-13 23:31:30.000000]) ==
+	  1_234_567_890_000_000_000
+  end
+  
   test "chrome 12_879_041_490_000_000" do
 	assert Epochs.chrome(12_879_041_490_000_000) ==
 	  ~N[2009-02-13 23:31:30.000000]
