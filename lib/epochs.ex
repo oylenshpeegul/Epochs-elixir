@@ -4,6 +4,17 @@ defmodule Epochs do
   """
 
   @seconds_per_day 24 * 60 * 60
+
+  @doc """
+  APFS time is the number of nanoseconds since 1970-01-01.
+  Cf., APFS filesystem format (https://blog.cugu.eu/post/apfs/).
+  """
+  def apfs(n) do
+	epoch2time(n, 1_000_000_000, 0)
+  end
+  def to_apfs(ndt) do
+	time2epoch(ndt, 1_000_000_000, 0)
+  end
   
   @doc """
   Chrome time is the number of microseconds since 1601-01-01, which is
